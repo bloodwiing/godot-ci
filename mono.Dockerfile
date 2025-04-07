@@ -17,6 +17,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rsync \
     wine64 \
     osslsigncode \
+    software-properties-common \
+    npm \
+    && npm install npm@latest -g \
+    && npm install n -g \
+    && n latest \
     && rm -rf /var/lib/apt/lists/*
 
 # When in doubt, see the downloads page: https://github.com/godotengine/godot-builds/releases/
@@ -32,11 +37,11 @@ ARG RELEASE_NAME="stable"
 ARG SUBDIR=""
 
 ARG GODOT_TEST_ARGS=""
-ARG GODOT_PLATFORM="linux.x86_64"
+ARG GODOT_PLATFORM="linux.arm64"
 
 # NOTE: Mono downloads use an underscore instead of a dot between `linux` and `x86_64` in their URL
 # and folder name within the ZIP, but not in the binary file name within the ZIP.
-ARG GODOT_ZIP_PLATFORM="linux_x86_64"
+ARG GODOT_ZIP_PLATFORM="linux_arm64"
 
 RUN wget https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${RELEASE_NAME}/Godot_v${GODOT_VERSION}-${RELEASE_NAME}_mono_${GODOT_ZIP_PLATFORM}.zip \
     && wget https://github.com/godotengine/godot-builds/releases/download/${GODOT_VERSION}-${RELEASE_NAME}/Godot_v${GODOT_VERSION}-${RELEASE_NAME}_mono_export_templates.tpz \
@@ -50,11 +55,11 @@ RUN wget https://github.com/godotengine/godot-builds/releases/download/${GODOT_V
     && mv templates/* ~/.local/share/godot/export_templates/${GODOT_VERSION}.${RELEASE_NAME}.mono \
     && rm -f Godot_v${GODOT_VERSION}-${RELEASE_NAME}_mono_export_templates.tpz Godot_v${GODOT_VERSION}-${RELEASE_NAME}_mono_${GODOT_ZIP_PLATFORM}.zip
 
-ADD getbutler.sh /opt/butler/getbutler.sh
-RUN bash /opt/butler/getbutler.sh
-RUN /opt/butler/bin/butler -V
+# ADD getbutler.sh /opt/butler/getbutler.sh
+# RUN bash /opt/butler/getbutler.sh
+# RUN /opt/butler/bin/butler -V
 
-ENV PATH="/opt/butler/bin:${PATH}"
+# ENV PATH="/opt/butler/bin:${PATH}"
 
 # Download and set up Android SDK to export to Android.
 ENV ANDROID_HOME="/usr/lib/android-sdk"
