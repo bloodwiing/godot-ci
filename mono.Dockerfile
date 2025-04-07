@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     osslsigncode \
     software-properties-common \
     npm \
-    && npm install npm@10 -g \
+    && npm install npm@9 -g \
     && npm install n -g \
     && n latest \
     && rm -rf /var/lib/apt/lists/*
